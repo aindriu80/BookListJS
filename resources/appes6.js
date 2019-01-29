@@ -16,7 +16,7 @@ class UI {
           <td>${book.title}</td>
           <td>${book.author}</td>
           <td>${book.isbn}</td>
-          <td><a href="#" class="delete">X</a></td>
+      <td><a href="#" class="delete">X</a></td>
           `;
 
     list.appendChild(row);
@@ -53,6 +53,28 @@ class UI {
   }
 }
 
+// Local Storage Class
+class Store {
+  static getBooks() {
+    let books;
+    if (localStorage.getItem("books") === null) {
+      books = [];
+    } else {
+      books = JSON.parse(localStorage.getItem("books"));
+    }
+    return books;
+  }
+  static displayBooks() {}
+  static addBook(book) {
+    const books = Store.getBooks();
+
+    books.push(books);
+
+    localStorage.setItem("books", JSON.stringify(books));
+  }
+  static removeBook() {}
+}
+
 // Event Listener for book
 document.getElementById("book-form").addEventListener("submit", function(e) {
   // Get Form value
@@ -73,6 +95,9 @@ document.getElementById("book-form").addEventListener("submit", function(e) {
   } else {
     // Add book to list
     ui.addBookToList(book);
+
+    // Add to LocalStorage
+    Store.addBook(book);
 
     // Show success
     ui.showAlert("Book has been added!", "success");
